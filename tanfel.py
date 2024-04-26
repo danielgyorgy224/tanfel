@@ -1,12 +1,12 @@
 with open("beosztas.txt", "r", encoding="utf-8") as fi:
-    beosztas_list = fi.read().split("\n")
+    beosztas_lista = fi.read().split("\n")
     
 beosztas = []
-for i in range(0, len(beosztas_list), 4):
-    beosztas.append({"nev": beosztas_list[i],
-                     "tantargy": beosztas_list[i+1],
-                     "osztaly": beosztas_list[i+2],
-                     "oraszam": int(beosztas_list[i+3])})
+for i in range(0, len(beosztas_lista), 4):
+    beosztas.append({"nev": beosztas_lista[i],
+                     "tantargy": beosztas_lista[i+1],
+                     "osztaly": beosztas_lista[i+2],
+                     "oraszam": int(beosztas_lista[i+3])})
 
 def get_osszoraszam(l):
     o = 0
@@ -28,18 +28,12 @@ def get_csopbontas(o, t, l):
         i+=1
     return i<len(l)
 
-def get_ossztanar(l):
-    d = []
-    for i in l:
-        if i['nev'] not in d:
-            d.append(i['nev'])
-    return len(d)
-
-def get_ossztanar_alt(l):
+def get_tanarlista(l):
     t = []
     for i in l:
-        t.append(i['nev'])
-    return len(list(dict.fromkeys(t)))
+        if i['nev'] not in t:
+            t.append(i['nev'])
+    return t
 
 print(f"2. feladat\nA fájlban {len(beosztas)} bejegyzés van.")
 print(f"3. feladat\nAz iskolában a heti összóraszám: {get_osszoraszam(beosztas)}")
@@ -53,4 +47,9 @@ if get_csopbontas(osztaly, tantargy, beosztas):
     print("Csoportbontásban vannak.")
 else:
     print("Nincsenek csoportbontásban.")
-print(f"7. feladat\nAz iskolában {get_ossztanar(beosztas)} tanár tanít.")
+print(f"7. feladat\nAz iskolában {len(get_tanarlista(beosztas))} tanár tanít.")
+
+tanarok_egyedi = get_tanarlista(beosztas)
+with open("tanarok.txt", "w", encoding="utf-8") as fo:
+    for tanar in tanarok_egyedi:
+        print(tanar, file=fo)
